@@ -389,10 +389,12 @@ background color as well.  FRAC is the amount of dimming where
 0.0 is no change and 1.0 is maximum change.  Returns a plist
 containing the new foreground (and if needed, new background)
 suitable for use with `face-remap-add-relative`."
-  (let ((fg (face-foreground f))
-        (bg (face-background f))
-        (def-fg (face-foreground 'default))
-        (def-bg (face-background 'default))
+  (let* ((fg-original (face-foreground f))
+         (fg (if (eq 'reset fg-original) 'unspecified fg-original))
+         (bg-original (face-background f))
+         (bg (if (eq 'reset bg-original) 'unspecified bg-original))
+         (def-fg (face-foreground 'default))
+         (def-bg (face-background 'default))
         ;; when mode is :both, the perceptual effect is "doubled"
         (my-frac (if (eq dimmer-adjustment-mode :both)
                      (/ frac 2.0)
